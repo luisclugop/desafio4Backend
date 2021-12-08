@@ -1,4 +1,5 @@
 const fs = require('fs');
+const error = "Producto no encontrado";
 
 class Contenedor {
     constructor(filename = "productos.json") {
@@ -32,17 +33,34 @@ class Contenedor {
 
     update(id, objeto) {
         const index = this.list.findIndex( (objetoActualizar) => objetoActualizar.id == id)
-        objeto.id = this.list[index].id
-        this.list[index] = objeto
+        // objeto.id = this.list[index].id
+        // this.list[index] = objeto
 
-        return objeto;
+        // return objeto;
+
+        if (index) {
+            objeto.id = this.list[index].id
+            this.list[index] = objeto
+
+            return objeto;
+        } else {
+            return response.json({error})
+        }
     }
 
     delete(id) {
         const indexDelete = this.list.findIndex( (objetoEliminar) => objetoEliminar.id == id)
-        this.list.splice(indexDelete, 1);
+        // this.list.splice(indexDelete, 1);
 
-        return this.list;
+        // return this.list;
+
+        if (indexDelete) {
+            this.list.splice(indexDelete, 1);
+
+            return this.list;
+        } else {
+            return response.json({error})
+        }
     }
 }
 

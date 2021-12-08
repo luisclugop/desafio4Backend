@@ -25,11 +25,12 @@ router.get("/", (request, response) => {
 
 router.get("/:id", (request, response) => {
     let id = request.params.id
-    if (id) {
-        return response.json(contenedor.find(id))
-    } else {
-        return response.json({error})
-    }
+    return response.json(contenedor.find(id))
+    // if (id) {
+    //     return response.json(contenedor.find(id))
+    // } else {
+    //     return response.json({error})
+    // }
 })
 
 //Insertar un producto por post
