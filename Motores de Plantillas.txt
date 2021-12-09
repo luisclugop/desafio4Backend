@@ -1,0 +1,9 @@
+Motores de Plantillas:
+
+Handlebars: Su motor de plantillas es muy simple y usa las expresiones {{ }}, lo cual, lo vuelve muy sencillo.
+
+Pug: Su motor de plantillas es muy sencillo, pero se vuelve algo dificil, ya que, estoy acostumbrado a etiquetas.
+
+Ejs: Es un motor de plantilla muy popular, y se usa de los dos lados del server y del cliente, al igual que es facil de usar y configurar.
+
+El motor de busqueda que prefiero es "EJS"

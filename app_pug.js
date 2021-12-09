@@ -1,4 +1,3 @@
-const { request } = require('express');
 const express = require('express');
 const Contenedor = require('./library/Contenedor.js')
 const { Router } = express;
@@ -11,7 +10,7 @@ app.use(express.urlencoded({
 }))
 
 app.set('views', './views')
-app.set('view engine', 'ejs')
+app.set('view engine', 'pug')
 
 const router = Router();
 const contenedor = new Contenedor(__dirname + "/data/productos.json");
@@ -62,14 +61,14 @@ app.use('/api/productos', router);
 // app.use(express.static('./views'))
 
 app.get("/", (request, response) => {
-    return response.render('ejs/form.ejs')
+    return response.render('pug/form.pug')
 })
 
 app.get("/list", (request, response) => {
-    return response.render('ejs/list.ejs', {
+    return response.render('pug/list.pug', {
         list: contenedor.list
     })
 })
 
 app.listen(8080);
-console.log("Corriendo EJS...")
+console.log("Corriendo Pug...")

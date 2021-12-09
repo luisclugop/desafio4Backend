@@ -1,0 +1,24 @@
+html 
+    head 
+        title="Plantilla Pug"
+    body
+
+    if list.length == 0
+        h2.green No hay productos para mostrar
+    else
+        table(style='width:100%', border='1')
+            tr
+                th "Producto:"
+                th "Precio:"
+                th "Imagen:"
+            each product in list
+                tr
+                    td= product.producto
+                    td= product.price
+                    td
+                        img(src=product.thumbnail style='width:50px')
+
+                    
+    
+    br
+    a(href='/') Pagina Principal
