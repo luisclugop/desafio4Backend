@@ -1,5 +1,5 @@
 const fs = require('fs');
-const error = "Producto no encontrado";
+const error = { error: 'producto no encontrado' };
 
 class Contenedor {
     constructor(filename = "productos.json") {
@@ -22,7 +22,16 @@ class Contenedor {
     }
 
     find(id) {
-        return this.list.find( (objeto) => objeto.id == id)
+        // return this.list.find( (objeto) => objeto.id == id)
+        const producto = this.list.find( (objeto) => objeto.id == id)
+        if(producto) {
+            return producto;
+        } else {
+            return error;
+        }
+
+        // condicional ternaria
+        // return producto ? producto : error
     }
 
     insert(objeto) {
@@ -38,13 +47,13 @@ class Contenedor {
 
         // return objeto;
 
-        if (index) {
+        if (index != -1) {
             objeto.id = this.list[index].id
             this.list[index] = objeto
 
             return objeto;
         } else {
-            return response.json({error})
+            return error;
         }
     }
 
@@ -54,12 +63,12 @@ class Contenedor {
 
         // return this.list;
 
-        if (indexDelete) {
+        if (indexDelete != -1) {
             this.list.splice(indexDelete, 1);
 
             return this.list;
         } else {
-            return response.json({error})
+            return error;
         }
     }
 }
