@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBSOCKET</title>
+</head>
+<body>
+    <h1>WEBSOCKET <strong id="username"></strong></h1>
+    <form id="myForm">
+        <!-- <label for="username">Nombre:</label><br>
+        <input type="text" id="username" name="username" placeholder="Nombre:"><br> -->
+        <label for="texto">mensaje:</label><br>
+        <input type="text" id="texto" name="texto" placeholder="Texto:"><br>
+        <button type="submit">Agregar Mensaje</button>
+    </form><br>
+
+    <div id="messages"></div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
