@@ -1,30 +1,49 @@
-const { request } = require('express');
 const express = require('express');
-const Contenedor = require('./library/Contenedor.js')
 const { Router } = express;
+const handlebars = require("express-handlebars")
+const Contenedor = require('./library/Contenedor.js')
+
+// Conexion Server por Socket
+const { Server: HttpServer } = require("http");
+const { Server: IOServer } = require("socket.io");
 
 const app = express();
-// Middelwares express
-app.use(express.json())
-app.use(express.urlencoded({
-    extended: true
-}))
-
-app.set('views', './views')
-app.set('view engine', 'ejs')
-
 const router = Router();
 const contenedor = new Contenedor(__dirname + "/data/productos.json");
 const error = "Producto no encontrado";
 
+// Constantes Server Socket
+const httpServer = new HttpServer(app)
+const io = new IOServer(httpServer)
+// Constantes Server Socket
+
+// Middelwares express
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
+
+app.engine(
+    "handlebars",
+    handlebars.engine()
+);
+
+contenedor.init();
+app.use(express.static('./public'));
+app.use('/api/productos', router);
+
+// Vistas
+app.set('views', './views');
+app.set('view engine', 'handlebars');
+
+// Logica Router
 router.get("/", (request, response) => {
     return response.json(contenedor.list)
 })
 
-//Traer producto por id
-// router.get("/:id", (request, response) => {
-//     let id = request.params.id
-//     return response.json(contenedor.find(id))
+// router.get("/", (request, response) => {
+//     const elements = contenedor.getAll()
+//     return response.send(JSON.stringify(elements))
 // })
 
 router.get("/:id", (request, response) => {
@@ -34,13 +53,6 @@ router.get("/:id", (request, response) => {
     } else {
         return error
     }
-    
-    // if (id) {
-    //     return response.json(contenedor.find(id))
-    // } else {
-    //     return response.json({error})
-    // }
-
 })
 
 //Insertar un producto por post
@@ -48,8 +60,14 @@ router.post("/", (request, response) => {
     let objeto = request.body
     contenedor.insert(objeto)
     console.log("Nuevo producto agregado")
-    return response.redirect("/list")
+    return response.redirect("/")
 })
+// router.post("/", (request, response) => {
+//     let objeto = request.body
+//     contenedor.insert(objeto)
+//     console.log("Nuevo producto agregado")
+//     return response.redirect("/list")
+// })
 
 //Editar un producto de nuestra lista
 router.put("/:id", (request, response) => {
@@ -64,18 +82,54 @@ router.delete("/:id", (request, response) => {
     return response.json(contenedor.delete(id))
 })
 
-app.use('/api/productos', router);
+// app.use('/api/productos', router);
 // app.use(express.static('./views'))
 
-app.get("/", (request, response) => {
-    return response.render('ejs/form.ejs')
-})
 
-app.get("/list", (request, response) => {
-    return response.render('ejs/list.ejs', {
-        list: contenedor.list
+// app.get("/", (request, response) => {
+//     return response.render('form.ejs')
+// })
+
+// app.get("/", (request, response) => {
+//     return response.render('productos.handlebars')
+// })
+
+app.get("/", (request, response) => {
+    return response.render('handlebars/productos.handlebars', {
+        list: contenedor.list, showList: true
     })
 })
 
-app.listen(8080);
-console.log("Corriendo EJS...")
+// app.get("/list", (request, response) => {
+//     return response.render('ejs/list.ejs', {
+//         list: contenedor.list
+//     })
+// })
+
+// app.get("/", (request, response) => {
+//     return response.render('ejs/list.ejs', {
+//         list: contenedor.list
+//     })
+// })
+
+// app.listen(8080);
+// console.log("Corriendo EJS...")
+
+httpServer.listen(8080, function() {
+    console.log("Corriendo IOServer")
+})
+
+io.on("connection", (socket) => {
+    console.log("Nuevo usuario")
+    socket.emit('contenedor', contenedor)
+})
+
+io.on("connection", (socket) => {
+    // Escuchamos la peticion del index.js en public
+    // console.log(data)
+    socket.on('new_producto', async (data) => {
+        console.log(data)
+        await contenedor.insert(data)
+        io.sockets.emit('productos', data)
+    })
+})

@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: auto;
+    background-color: aliceblue;
+}
+
+.prod {
+    width: 100%;
+    height: auto;
+    background-color: #95d5b2;
+    text-align: center;
+}

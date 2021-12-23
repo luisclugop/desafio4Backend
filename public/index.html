@@ -5,21 +5,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WEBSOCKET</title>
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>WEBSOCKET <strong id="username"></strong></h1>
-    <form id="myForm">
-        <!-- <label for="username">Nombre:</label><br>
-        <input type="text" id="username" name="username" placeholder="Nombre:"><br> -->
-        <label for="texto">mensaje:</label><br>
-        <input type="text" id="texto" name="texto" placeholder="Texto:"><br>
-        <button type="submit">Agregar Mensaje</button>
-    </form><br>
+    <div class="prod">
+        <h1>WEBSOCKET <strong id="username"></strong></h1>
 
-    <div id="messages"></div>
+        <h4>Ingresa un Producto</h4>
+        <form id="formProductos" method="post">
+            <label for="producto">Nombre Producto:</label><br>
+            <input type="text" id="producto" name="producto" placeholder="Texto:"><br>
+            <label for="price">Precio:</label><br>
+            <input type="number" id="price" name="price" placeholder="Precio:"><br>
+            <label for="thumbnail">Link Imagen:</label><br>
+            <input type="text" id="thumbnail" name="thumbnail" placeholder="Link Imagen:"><br><br>
+            <button type="submit">Agregar Productos</button>
+        </form><br>
+
+        <h4>Productos:</h4>
+        <!-- <table id="productos"></table> -->
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Imagen</th>
+              </tr>
+            </thead>
+            <tbody class="productos" id="productos">
+            </tbody>
+          </table>
+    </div>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </body>
 </html>
