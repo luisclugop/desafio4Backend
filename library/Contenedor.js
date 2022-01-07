@@ -1,74 +1,58 @@
-const fs = require('fs');
-const error = { error: 'producto no encontrado' };
+// const fs = require('fs');
+// const { db } = require('./db/db.js')
+const { db } = require('../db/db')
 
 class Contenedor {
-    constructor(filename = "productos.json") {
-        this.id = 0;
-        this.list = [];
-        this.filename = filename;
-
-        this.init();
+    constructor(table_name) {
+        this.table = table_name
+        this.knex = require('knex')(db)
     }
 
-    init() {
-        console.log(`Loading ${this.filename} ...`)
-        const data = fs.readFileSync(this.filename)
-        const listaFromFile = JSON.parse(data)
+    async init(){
+        await this.knex.schema.createTableIfNotExists(this.table, table => {
+            table.increments()
+            table.string('producto', 15)
+            table.string('codigo', 8)
+            table.float('price')
+            table.string('thumbnail', 50)
+            table.float('stock', 5)
+            
+        })
+    }
 
-        for(const objeto of listaFromFile) {
-            this.insert(objeto);
+    async save(objeto){
+        try{
+            return await this.knex(this.table).insert([objeto])
         }
-        console.log(`File loaded.`)
-    }
-
-    find(id) {
-        // return this.list.find( (objeto) => objeto.id == id)
-        const producto = this.list.find( (objeto) => objeto.id == id)
-        if(producto) {
-            return producto;
-        } else {
-            return error;
-        }
-
-        // condicional ternaria
-        // return producto ? producto : error
-    }
-
-    insert(objeto) {
-        objeto.id = ++this.id;
-        this.list.push(objeto);
-        return objeto
-    }
-
-    update(id, objeto) {
-        const index = this.list.findIndex( (objetoActualizar) => objetoActualizar.id == id)
-        // objeto.id = this.list[index].id
-        // this.list[index] = objeto
-
-        // return objeto;
-
-        if (index != -1) {
-            objeto.id = this.list[index].id
-            this.list[index] = objeto
-
-            return objeto;
-        } else {
-            return error;
+        catch(err){
+            return `Ha ocurrido un error al guardar los datos en la database ${err}`
         }
     }
 
-    delete(id) {
-        const indexDelete = this.list.findIndex( (objetoEliminar) => objetoEliminar.id == id)
-        // this.list.splice(indexDelete, 1);
+    async getById(id){
+        try{
+            return await this.knex.from(this.table).select("*").where('id', id).limit(1)
+        }
+        catch(err){
+            return `Hubo un error al buscar el elemento ${err}`
+        }
+    }
 
-        // return this.list;
+    async getAll(){
+        try{
+            return await this.knex.from(this.table).select("*")
+        }
+        catch(err){
+            return `Hubo un error al buscar todos los elementos ${err}`
+        }
+    }
 
-        if (indexDelete != -1) {
-            this.list.splice(indexDelete, 1);
-
-            return this.list;
-        } else {
-            return error;
+    async deleteById(id){
+        try{
+            return await this.knex(this.table).where('id', id).del()
+        }
+        catch(err){
+            return `Hubo un error al eliminar el elemento ${err}`
         }
     }
 }

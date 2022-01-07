@@ -17,10 +17,14 @@
         <form id="formProductos" method="post">
             <label for="producto">Nombre Producto:</label><br>
             <input type="text" id="producto" name="producto" placeholder="Texto:"><br>
+            <label for="codigo">Codigo Producto:</label><br>
+            <input type="text" id="codigo" name="codigo" placeholder="Codigo:"><br>
             <label for="price">Precio:</label><br>
             <input type="number" id="price" name="price" placeholder="Precio:"><br>
-            <label for="thumbnail">Link Imagen:</label><br>
-            <input type="text" id="thumbnail" name="thumbnail" placeholder="Link Imagen:"><br><br>
+            <label for="thumbnail">Imagen:</label><br>
+            <input type="text" id="thumbnail" name="thumbnail" placeholder="Link Imagen:"><br>
+            <label for="stock">Stock:</label><br>
+            <input type="number" id="stock" name="stock" placeholder="Stock:"><br><br>
             <button type="submit">Agregar Productos</button>
         </form><br>
 
@@ -30,9 +34,12 @@
         <table class="table">
             <thead>
               <tr>
+                <th scope="col">Id</th>
                 <th scope="col">Producto</th>
+                <th scope="col">Codigo</th>
                 <th scope="col">Precio</th>
                 <th scope="col">Imagen</th>
+                <th scope="col">Stock</th>
               </tr>
             </thead>
             <tbody class="productos" id="productos">
